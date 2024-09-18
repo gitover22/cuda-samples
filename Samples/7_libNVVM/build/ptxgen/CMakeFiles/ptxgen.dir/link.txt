@@ -1,0 +1,1 @@
+/usr/bin/cc   -Wl,-rpath,/usr/local/cuda/nvvm/lib64 CMakeFiles/ptxgen.dir/ptxgen.c.o  -o ptxgen  -Wl,-rpath,/usr/local/cuda/nvvm/lib64: /usr/local/cuda/nvvm/lib64/libnvvm.so 

@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/raid/home/zouguoqiang/cuda-samples/Samples/7_libNVVM/ptxgen/ptxgen.c
+assert.h
+-
+nvvm.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+sys/stat.h
+-
+
+/usr/local/cuda/nvvm/include/nvvm.h
+stdlib.h
+-
+

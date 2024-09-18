@@ -1,0 +1,1 @@
+/usr/bin/cc   -Wl,-rpath,/usr/local/cuda/nvvm/lib64 CMakeFiles/uvmlite.dir/uvmlite.c.o  -o uvmlite  -Wl,-rpath,/usr/local/cuda/nvvm/lib64: /usr/local/cuda/nvvm/lib64/libnvvm.so /usr/lib/x86_64-linux-gnu/libcuda.so 

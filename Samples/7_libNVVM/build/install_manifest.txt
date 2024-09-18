@@ -1,0 +1,7 @@
+/raid/home/zouguoqiang/cuda-samples/Samples/7_libNVVM/install/bin/dsl
+/raid/home/zouguoqiang/cuda-samples/Samples/7_libNVVM/install/bin/dsl-gpu64.ll
+/raid/home/zouguoqiang/cuda-samples/Samples/7_libNVVM/install/bin/simple
+/raid/home/zouguoqiang/cuda-samples/Samples/7_libNVVM/install/bin/simple-gpu64.ll
+/raid/home/zouguoqiang/cuda-samples/Samples/7_libNVVM/install/bin/ptxgen
+/raid/home/zouguoqiang/cuda-samples/Samples/7_libNVVM/install/bin/uvmlite
+/raid/home/zouguoqiang/cuda-samples/Samples/7_libNVVM/install/bin/uvmlite64.ll

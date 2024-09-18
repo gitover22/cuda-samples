@@ -1,46 +1,8 @@
 # CUDA Samples
 
-Samples for CUDA Developers which demonstrates features in CUDA Toolkit. This version supports [CUDA Toolkit 12.5](https://developer.nvidia.com/cuda-downloads).
-
-## Release Notes
-
-This section describes the release notes for the CUDA Samples on GitHub only.
-
-### CUDA 12.5
-
-### [older versions...](./CHANGELOG.md)
-
-## Getting Started
-
-### Prerequisites
-
-Download and install the [CUDA Toolkit 12.5](https://developer.nvidia.com/cuda-downloads) for your corresponding platform.
-For system requirements and installation instructions of cuda toolkit, please refer to the [Linux Installation Guide](http://docs.nvidia.com/cuda/cuda-installation-guide-linux/), and the [Windows Installation Guide](http://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html).
-
-### Getting the CUDA Samples
-
-Using git clone the repository of CUDA Samples using the command below.
-```
-git clone https://github.com/NVIDIA/cuda-samples.git
-```
-
-Without using git the easiest way to use these samples is to download the zip file containing the current version by clicking the "Download ZIP" button on the repo page. You can then unzip the entire archive and use the samples.
+Samples for CUDA Developers which demonstrates features in CUDA Toolkit. 
 
 ## Building CUDA Samples
-
-### Windows
-
-The Windows samples are built using the Visual Studio IDE. Solution files (.sln) are provided for each supported version of Visual Studio, using the format:
-```
-*_vs<version>.sln - for Visual Studio <version>
-```
-Complete samples solution files exist at parent directory of the repo:
-
-Each individual sample has its own set of solution files at:
-`<CUDA_SAMPLES_REPO>\Samples\<sample_dir>\`
-
-To build/examine all the samples at once, the complete solution files should be used. To build/examine a single sample, the individual sample solution files should be used.
-
 ### Linux
 The Linux samples are built using makefiles. To use the makefiles, change the current directory to the sample directory you wish to build, and run make:
 ```
@@ -48,15 +10,16 @@ $ cd <sample_dir>
 $ make
 ```
 The samples makefiles can take advantage of certain options:
-*  **TARGET_ARCH=<arch>** - cross-compile targeting a specific architecture. Allowed architectures are x86_64, ppc64le, armv7l, aarch64.
-    By default, TARGET_ARCH is set to HOST_ARCH. On a x86_64 machine, not setting TARGET_ARCH is the equivalent of setting TARGET_ARCH=x86_64.<br/>
+*  **TARGET_ARCH=<arch>** - 用于交叉编译，即在一种架构的机器上为另一种架构进行编译.<br/>
+    support： x86_64, ppc64le, armv7l, aarch64.<br/>
+    如果不设置 TARGET_ARCH，默认值为当前机器的架构 HOST_ARCH。例如，在 x86_64 机器上，如果不设置该选项，TARGET_ARCH 将默认为 x86_64<br/>
 `$ make TARGET_ARCH=x86_64` <br/> `$ make TARGET_ARCH=ppc64le` <br/> `$ make TARGET_ARCH=armv7l` <br/> `$ make TARGET_ARCH=aarch64` <br/>
     See [here](http://docs.nvidia.com/cuda/cuda-samples/index.html#cross-samples) for more details on cross platform compilation of cuda samples.
-*   **dbg=1** - build with debug symbols
+*   **dbg=1** - 生成带有调试信息的可执行文件
     ```
     $ make dbg=1
     ```
-*   **SMS="A B ..."** - override the SM architectures for which the sample will be built, where `"A B ..."` is a space-delimited list of SM architectures. For example, to generate SASS for SM 50 and SM 60, use `SMS="50 60"`.
+*   **SMS="A B ..."** - SMS 选项用于指定为哪些 SM 架构（即 CUDA 的流式多处理器架构）生成代码,例如，如果需要为 SM 50 和 SM 60 生成 SASS（汇编代码），可以这样使用
     ```
     $ make SMS="50 60"
     ```
