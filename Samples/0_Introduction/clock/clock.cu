@@ -45,69 +45,60 @@
 #include <helper_cuda.h>
 #include <helper_functions.h>
 
-// This kernel computes a standard parallel reduction and evaluates the
-// time it takes to do that for each block. The timing results are stored
-// in device memory.
+
+
+/**
+ * @brief 执行定时的归约操作，计算输入数组的最小值并记录每个块的执行时间。
+ * 
+ * 这个 CUDA 内核函数从输入数组中执行并行归约操作以找到最小值，并使用 `clock()` 函数记录每个块的执行时间。
+ * 
+ * @param input  输入数组，存储每个线程块要处理的数据。
+ * @param output 输出数组，存储每个块计算的最小值。
+ * @param timer  定时器数组，记录每个块的开始和结束时间。
+ */
 __global__ static void timedReduction(const float *input, float *output,
                                       clock_t *timer) {
   // __shared__ float shared[2 * blockDim.x];
-  extern __shared__ float shared[];
+  extern __shared__ float shared[]; // 分配一个动态大小的共享内存
 
-  const int tid = threadIdx.x;
-  const int bid = blockIdx.x;
+  const int tid = threadIdx.x; // （0 - 255） 获取当前线程的索引
+  const int bid = blockIdx.x;// （0 - 63）  获取当前块的索引
 
-  if (tid == 0) timer[bid] = clock();
+  if (tid == 0) timer[bid] = clock(); // 块的第一个线程开始计时
 
-  // Copy input.
+  // 将全局内存中的输入数据拷贝到共享内存中
   shared[tid] = input[tid];
   shared[tid + blockDim.x] = input[tid + blockDim.x];
 
-  // Perform reduction to find minimum.
+  // 开始执行归约操作以找到最小值
   for (int d = blockDim.x; d > 0; d /= 2) {
+    // 同步线程，确保所有线程都完成了共享内存的写入操作
     __syncthreads();
-
+    // 只有前一半的线程参与本轮比较
     if (tid < d) {
       float f0 = shared[tid];
       float f1 = shared[tid + d];
-
+      // 如果后面的元素比前面的元素小，则更新为较小值
       if (f1 < f0) {
         shared[tid] = f1;
       }
     }
   }
 
-  // Write result.
+  // 当归约完成后，第 0 号线程将最小值写入输出数组
   if (tid == 0) output[bid] = shared[0];
-
+  // 再次同步所有线程，确保归约操作完成
   __syncthreads();
-
+  // 如果当前线程是第 0 号线程，记录当前块的结束时钟周期
   if (tid == 0) timer[bid + gridDim.x] = clock();
 }
 
 #define NUM_BLOCKS 64
 #define NUM_THREADS 256
 
-// It's interesting to change the number of blocks and the number of threads to
-// understand how to keep the hardware busy.
-//
-// Here are some numbers I get on my G80:
-//    blocks - clocks
-//    1 - 3096
-//    8 - 3232
-//    16 - 3364
-//    32 - 4615
-//    64 - 9981
-//
-// With less than 16 blocks some of the multiprocessors of the device are idle.
-// With more than 16 you are using all the multiprocessors, but there's only one
-// block per multiprocessor and that doesn't allow you to hide the latency of
-// the memory. With more than 32 the speed scales linearly.
-
-// Start the main CUDA Sample here
 int main(int argc, char **argv) {
   printf("CUDA Clock sample\n");
 
-  // This will pick the best possible CUDA capable device
   int dev = findCudaDevice(argc, (const char **)argv);
 
   float *dinput = NULL;
@@ -121,20 +112,16 @@ int main(int argc, char **argv) {
     input[i] = (float)i;
   }
 
-  checkCudaErrors(
-      cudaMalloc((void **)&dinput, sizeof(float) * NUM_THREADS * 2));
+  checkCudaErrors(cudaMalloc((void **)&dinput, sizeof(float) * NUM_THREADS * 2));
   checkCudaErrors(cudaMalloc((void **)&doutput, sizeof(float) * NUM_BLOCKS));
-  checkCudaErrors(
-      cudaMalloc((void **)&dtimer, sizeof(clock_t) * NUM_BLOCKS * 2));
+  checkCudaErrors(cudaMalloc((void **)&dtimer, sizeof(clock_t) * NUM_BLOCKS * 2));
 
   checkCudaErrors(cudaMemcpy(dinput, input, sizeof(float) * NUM_THREADS * 2,
                              cudaMemcpyHostToDevice));
 
-  timedReduction<<<NUM_BLOCKS, NUM_THREADS, sizeof(float) * 2 * NUM_THREADS>>>(
-      dinput, doutput, dtimer);
+  timedReduction<<<NUM_BLOCKS, NUM_THREADS, sizeof(float) * 2 * NUM_THREADS>>>(dinput, doutput, dtimer);
 
-  checkCudaErrors(cudaMemcpy(timer, dtimer, sizeof(clock_t) * NUM_BLOCKS * 2,
-                             cudaMemcpyDeviceToHost));
+  checkCudaErrors(cudaMemcpy(timer, dtimer, sizeof(clock_t) * NUM_BLOCKS * 2, cudaMemcpyDeviceToHost));
 
   checkCudaErrors(cudaFree(dinput));
   checkCudaErrors(cudaFree(doutput));

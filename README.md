@@ -32,25 +32,25 @@ The samples makefiles can take advantage of certain options:
 ## Samples list
 
 ### [0. Introduction](./Samples/0_Introduction/README.md)
-Basic CUDA samples for beginners that illustrate key concepts with using CUDA and CUDA runtime APIs.
+基本CUDA示例，说明了使用CUDA和CUDA运行时api的关键概念
 
 ### [1. Utilities](./Samples/1_Utilities/README.md)
-Utility samples that demonstrate how to query device capabilities and measure GPU/CPU bandwidth.
+演示如何查询设备能力和测量GPU/CPU带宽的实用示例
 
 ### [2. Concepts and Techniques](./Samples/2_Concepts_and_Techniques/README.md)
-Samples that demonstrate CUDA related concepts and common problem solving techniques.
+演示CUDA相关概念和常见问题解决技术的示例
 
 ### [3. CUDA Features](./Samples/3_CUDA_Features/README.md)
-Samples that demonstrate CUDA Features (Cooperative Groups, CUDA Dynamic Parallelism, CUDA Graphs etc).
+展示CUDA特性的样本(协作组、CUDA动态并行性、CUDA图等)。
 
 ### [4. CUDA Libraries](./Samples/4_CUDA_Libraries/README.md)
-Samples that demonstrate how to use CUDA platform libraries (NPP, NVJPEG, NVGRAPH cuBLAS, cuFFT, cuSPARSE, cuSOLVER and cuRAND).
+演示如何使用CUDA平台库的示例 (NPP, NVJPEG, NVGRAPH cuBLAS, cuFFT, cuSPARSE, cuSOLVER and cuRAND).
 
 ### [5. Domain Specific](./Samples/5_Domain_Specific/README.md)
 Samples that are specific to domain (Graphics, Finance, Image Processing).
-
+特定领域的实例（图形，金融，图像处理）
 ### [6. Performance](./Samples/6_Performance/README.md)
-Samples that demonstrate performance optimization.
+演示性能优化的示例
 
 ### [7. libNVVM](./Samples/7_libNVVM/README.md)
 Samples that demonstrate the use of libNVVVM and NVVM IR.
